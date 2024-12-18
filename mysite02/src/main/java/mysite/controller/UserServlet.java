@@ -1,5 +1,6 @@
 package mysite.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +18,8 @@ public class UserServlet extends HttpServlet {
 		
 		// /user?a=joinform(GET)
 		if("joinform".equals(action)) {
-			
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinform.jsp");
+			rd.forward(request, response);
 		} else if("join".equals(action)) { // /user?a=join(POST)
 			
 		} else if("joinsuccess".equals(action)) { // /user?a=joinsuccess(GET)
