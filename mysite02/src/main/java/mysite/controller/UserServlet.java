@@ -6,6 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mysite.dao.UserDao;
+import mysite.vo.UserVo;
+
 import java.io.IOException;
 
 @WebServlet("/user")
@@ -16,15 +19,35 @@ public class UserServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("a");
 		
-		// /user?a=joinform(GET)
-		if("joinform".equals(action)) {
+		if("joinform".equals(action)) { // /user?a=joinform(GET)
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinform.jsp");
 			rd.forward(request, response);
-		} else if("join".equals(action)) { // /user?a=join(POST)
+		} 
+		else if("join".equals(action)) { // /user?a=join(POST)
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			String gender = request.getParameter("gender");
 			
-		} else if("joinsuccess".equals(action)) { // /user?a=joinsuccess(GET)
+			UserVo vo = new UserVo();
+			vo.setName(name);
+			vo.setEmail(email);
+			vo.setPassword(password);
+			vo.setGender(gender);
 			
-		}
+			new UserDao().join(vo);
+			
+			response.sendRedirect(request.getContextPath()+"/user?a=joinsuccess");
+			
+		} 
+		else if("joinsuccess".equals(action)) { // /user?a=joinsuccess(GET)
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinsuccess.jsp");
+			rd.forward(request, response);
+		} 
+		else if("loginform".equals(action)) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+			rd.forward(request, response);
+		} 
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
