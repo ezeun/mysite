@@ -6,6 +6,6 @@
 				<li><a href="<%= request.getContextPath() %>/user?a=joinform">회원가입</a><li>
 				<li><a href="<%= request.getContextPath() %>/user?a=updateform">회원정보수정</a><li>
 				<li><a href="<%= request.getContextPath() %>/user?a=logoutform">로그아웃</a><li>
-				<li>님 안녕하세요 ^^;</li>
+				<li>이지은님 안녕하세요 ^^;</li>
 			</ul>
 		</div>

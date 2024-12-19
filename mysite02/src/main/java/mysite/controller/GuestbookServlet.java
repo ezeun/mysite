@@ -17,9 +17,9 @@ public class GuestbookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("a");
+		
 		if("insert".equals(action)) {
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
