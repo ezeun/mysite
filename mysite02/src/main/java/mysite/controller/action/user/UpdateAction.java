@@ -30,8 +30,11 @@ public class UpdateAction implements Action {
 		new UserDao().update(vo);
 		
 		request.setAttribute("vo", vo);
-		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/user/updateform.jsp");
-		rd.forward(request, response);
+		
+		UserVo sessionUser = new UserDao().findByEmailAndPassword(vo.getEmail(), vo.getPassword());
+		session.setAttribute("authUser", sessionUser);
+		
+		response.sendRedirect(request.getContextPath()+"/user?a=updateform");
 	}
 
 }
