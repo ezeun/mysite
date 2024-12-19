@@ -60,6 +60,62 @@ public class UserDao {
 			return userVo;
 	}
 
+	public UserVo findById(Long userId) {
+		UserVo userVo = null;
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select id, name, email, password, gender from user where id = ?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setLong(1, userId); 
+				
+				// 5. SQL 실행
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					Long id = rs.getLong(1);
+					String name = rs.getString(2);
+					String email = rs.getString(3);
+					String password = rs.getString(4);
+					String gender = rs.getString(5);
+					
+					userVo = new UserVo();
+					userVo.setId(id);
+					userVo.setName(name);
+					userVo.setEmail(email);
+					userVo.setPassword(password);
+					userVo.setGender(gender);
+				}
+				rs.close();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 
+			
+			return userVo;
+	}
+
+	public int update(UserVo vo) {
+		int count = 0;
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, password=?, gender=? where id=?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setString(1, vo.getName()); 
+				pstmt.setString(2, vo.getPassword()); 
+				pstmt.setString(3, vo.getGender()); 
+				pstmt.setLong(4, vo.getId()); 
+				
+				// 5. SQL 실행
+				count = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 
+			
+			return count;
+	}
+
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
