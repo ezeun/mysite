@@ -39,6 +39,9 @@
 					<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
 						<a href="">글수정</a>
 					</c:if>
+					<c:if test='${(not empty authUser)}'>
+						<a href="${pageContext.request.contextPath}/board?a=writeform&gNo=${vo.gNo}&oNo=${vo.oNo}&depth=${vo.depth}">답글쓰기</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

@@ -26,4 +26,6 @@ insert into board values(null, "짬뽕", "글 내용3",23, "2024-07-16",1,4,1,10
 insert into board values(null, "무아국수", "글 내용4",33, "2024-07-16",1,2,1,10);
 insert into board values(null, "놉!", "글 내용5",74, "2024-07-17",1,3,2,9);
 
+select max(g_no) from board;
+
 delete from board;

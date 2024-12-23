@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.servlet.http.HttpSession;
 import mysite.vo.BoardVo;
 import mysite.vo.UserVo;
 
@@ -128,19 +127,43 @@ public class BoardDao {
 		
 		return ret;
 	}
-	public void insert(String title, String contents, UserVo authUser) {
+	private void updateOrderNo(int gNo, int oNo) {
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("update board set o_no = o_no+1 where g_no=? and o_no>=?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setInt(1, gNo); 
+				pstmt.setInt(2, oNo); 
+				
+				// 5. SQL 실행
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 
+	}
+	public void insert(BoardVo vo, UserVo authUser) {
 		
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?);");
 		){			
 			// 4. Parameter Binding  
-			pstmt.setString(1, title); 
-			pstmt.setString(2, contents); 
-			pstmt.setInt(3, 0); 
-			pstmt.setInt(4, getMaxgNo()+1);
-			pstmt.setInt(5, 1);
-			pstmt.setInt(6, 0);
+			pstmt.setString(1, vo.getTitle()); 
+			pstmt.setString(2, vo.getContents()); 
+			pstmt.setInt(3, vo.getHit()); 
+			if(vo.getgNo()!=-1) { //답글
+				pstmt.setInt(4, vo.getgNo());
+				pstmt.setInt(5, vo.getoNo()+1);
+				pstmt.setInt(6, vo.getDepth()+1);
+				updateOrderNo( vo.getgNo(), vo.getoNo()+1);
+			}
+			else { //새글
+				pstmt.setInt(4, getMaxgNo()+1);
+				pstmt.setInt(5, 1);
+				pstmt.setInt(6, 0);
+			}			
 			pstmt.setLong(7, authUser.getId());
 			
 			// 5. SQL 실행
@@ -158,6 +181,7 @@ public class BoardDao {
 	
 	
 	
+
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
