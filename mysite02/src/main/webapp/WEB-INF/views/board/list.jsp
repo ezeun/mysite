@@ -40,7 +40,7 @@
 									<c:if test='${vo.depth!=0 }'>
 										<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 									</c:if>
-									<a href="">${vo.title}</a></td>
+									<a href="${pageContext.request.contextPath}/board?a=view&id=${vo.id}">${vo.title}</a></td>
 								<td>${vo.userName}</td>
 								<td>${vo.hit}</td>
 								<td>${vo.regDate }</td>

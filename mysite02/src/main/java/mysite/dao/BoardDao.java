@@ -57,7 +57,47 @@ public class BoardDao {
 		} 
 		return result;
 	}
-	
+
+	public BoardVo findById(Long boardId) {
+		BoardVo boardVo = null;
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select  title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s'), g_no, o_no, depth, user_id from board where id = ?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setLong(1, boardId); 
+				
+				// 5. SQL 실행
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					String title = rs.getString(1);
+					String contents = rs.getString(2);
+					int hit = rs.getInt(3);
+					String regDate = rs.getString(4);
+					int gNo = rs.getInt(5);
+					int oNo = rs.getInt(6);
+					int depth = rs.getInt(7);
+					Long userId = rs.getLong(8);
+					
+					boardVo = new BoardVo();
+					boardVo.setId(boardId);
+					boardVo.setTitle(title);
+					boardVo.setContents(contents);
+					boardVo.setHit(hit);
+					boardVo.setRegDate(regDate);
+					boardVo.setgNo(gNo);
+					boardVo.setoNo(oNo);
+					boardVo.setDepth(depth);
+					boardVo.setUserId(userId);
+				}
+				rs.close();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 
+			
+			return boardVo;
+	}
 	
 	
 	
@@ -82,4 +122,13 @@ public class BoardDao {
 		
 		return conn;
 	}
+
+
+
+
+
+
+
+
+
 }
