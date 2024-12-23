@@ -44,7 +44,11 @@
 								<td>${vo.userName}</td>
 								<td>${vo.hit}</td>
 								<td>${vo.regDate }</td>
-								<td><a href="" class="del">삭제</a></td>
+								<td>									
+									<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
+										<a href="" class="del">삭제</a>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -62,7 +66,9 @@
 				</div>				
 				
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
+					<c:if test='${not empty authUser }'>
+						<a href="" id="new-book">글쓰기</a>
+					</c:if>
 				</div>				
 			</div>
 		</div>
