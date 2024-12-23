@@ -7,8 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import jakarta.servlet.http.HttpSession;
 import mysite.vo.BoardVo;
+import mysite.vo.UserVo;
 
 
 public class BoardDao {
@@ -62,7 +65,8 @@ public class BoardDao {
 		BoardVo boardVo = null;
 		try (
 				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select  title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s'), g_no, o_no, depth, user_id from board where id = ?");
+				PreparedStatement pstmt = conn.prepareStatement("select  title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s'), g_no, o_no, depth, user_id "
+																+ " from board where id = ?");
 			){
 				// 4. Parameter Binding  
 				pstmt.setLong(1, boardId); 
@@ -99,6 +103,54 @@ public class BoardDao {
 			return boardVo;
 	}
 	
+	public int getMaxgNo() {
+		
+		Optional<Integer> max_gNo;
+		int ret = 0;
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select max(g_no) from board");
+			){							
+				// 5. SQL 실행
+				ResultSet rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					max_gNo = Optional.of(rs.getInt(1));
+					if(max_gNo.isEmpty()) ret = 0; // null 방지 
+					else ret = max_gNo.get();
+				}
+				rs.close();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 
+		
+		return ret;
+	}
+	public void insert(String title, String contents, UserVo authUser) {
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?);");
+		){			
+			// 4. Parameter Binding  
+			pstmt.setString(1, title); 
+			pstmt.setString(2, contents); 
+			pstmt.setInt(3, 0); 
+			pstmt.setInt(4, getMaxgNo()+1);
+			pstmt.setInt(5, 1);
+			pstmt.setInt(6, 0);
+			pstmt.setLong(7, authUser.getId());
+			
+			// 5. SQL 실행
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+	}
+	
 	
 	
 	
@@ -122,12 +174,6 @@ public class BoardDao {
 		
 		return conn;
 	}
-
-
-
-
-
-
 
 
 

@@ -8,6 +8,9 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
+<%
+	pageContext.setAttribute("newline","\n");
+%>
 </head>
 <body>
 	<div id="container">
@@ -26,7 +29,7 @@
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">
-								${vo.contents}
+								${fn:replace(vo.contents, newline, "<br>")}
 							</div>
 						</td>
 					</tr>
