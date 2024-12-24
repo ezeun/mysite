@@ -173,8 +173,23 @@ public class BoardDao {
 			System.out.println("error:" + e);
 		} 
 	}
-	
-	
+
+	public void deleteById(Long id) {
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("delete from board where id = ?");
+		){
+			// 4. Parameter Binding  
+			pstmt.setLong(1, id); 
+			
+			// 5. SQL 실행
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+	}
 	
 	
 	
@@ -198,6 +213,7 @@ public class BoardDao {
 		
 		return conn;
 	}
+
 
 
 

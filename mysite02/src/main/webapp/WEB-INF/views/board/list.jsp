@@ -46,7 +46,7 @@
 								<td>${vo.regDate }</td>
 								<td>									
 									<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
-										<a href="" class="del">삭제</a>
+										<a href="${pageContext.request.contextPath}/board?a=delete&id=${vo.id}" class="del">삭제</a>
 									</c:if>
 								</td>
 							</tr>
