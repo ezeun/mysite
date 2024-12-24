@@ -23,6 +23,7 @@
 				
 				<!--  게시글 리스트 -->
 				<c:set var="listCount" value="${fn:length(list)}"/>
+				<c:set var="rowSizePerPage" value="5"/>
 					<table class="tbl-ex">
 						<tr>
 							<th>번호</th>
@@ -34,7 +35,7 @@
 						</tr>			
 						
 						<c:forEach var="vo" items="${list}" varStatus="index">	
-							<c:if test='${((curPage-1)*5+1<=index.count) && (index.count<=(curPage-1)*5+5)}'>
+							<c:if test='${((curPage-1)*rowSizePerPage+1<=index.count) && (index.count<=(curPage-1)*rowSizePerPage+rowSizePerPage)}'>
 								<tr>
 									<td>${listCount-index.count+1}</td>
 									<td style="text-align:left; padding-left:${vo.depth*20}px"> 
@@ -63,6 +64,9 @@
 								<c:when test="${i == curPage }">
 									<li class="selected">${i }</li>
 								</c:when>
+								<c:when test="${i>= ((listCount -1)/rowSizePerPage+1)}">
+									<li>${i }</li>
+								</c:when>
 								<c:otherwise>
 									<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage}&curPage=${i}&lastPage=${lastPage}">${i }</a></li>
 								</c:otherwise>
@@ -70,21 +74,6 @@
 						</c:forEach>
 						<li><a href="">▶</a></li>
 					</ul>
-				<!-- 테스트
-					<ul>
-						<li><a href="">◀</a></li>
-						<c:forEach var="i" begin="1" end="5" step="1">
-							<c:choose>
-								<c:when test="${i == 3 }">
-									<li class="selected">${i }</li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="${pageContext.request.contextPath}/board&curPage=${i}">${i }</a></li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<li><a href="">▶</a></li>
-					</ul> -->
 				<!-- 원본
 					<ul>
 						<li><a href="">◀</a></li>
