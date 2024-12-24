@@ -59,7 +59,7 @@ public class BoardDao {
 		} 
 		return result;
 	}
-
+	
 	public BoardVo findById(Long boardId) {
 		BoardVo boardVo = null;
 		try (
@@ -245,6 +245,7 @@ public class BoardDao {
 		
 		return conn;
 	}
+
 
 
 

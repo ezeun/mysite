@@ -34,26 +34,58 @@
 						</tr>			
 						
 						<c:forEach var="vo" items="${list}" varStatus="index">	
-							<tr>
-								<td>${listCount-index.count+1}</td>
-								<td style="text-align:left; padding-left:${vo.depth*20}px"> 
-									<c:if test='${vo.depth!=0 }'>
-										<img src="${pageContext.request.contextPath }/assets/images/reply.png">
-									</c:if>
-									<a href="${pageContext.request.contextPath}/board?a=view&id=${vo.id}">${vo.title}</a></td>
-								<td>${vo.userName}</td>
-								<td>${vo.hit}</td>
-								<td>${vo.regDate }</td>
-								<td>									
-									<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
-										<a href="${pageContext.request.contextPath}/board?a=delete&id=${vo.id}" class="del">삭제</a>
-									</c:if>
-								</td>
-							</tr>
+							<c:if test='${((curPage-1)*5+1<=index.count) && (index.count<=(curPage-1)*5+5)}'>
+								<tr>
+									<td>${listCount-index.count+1}</td>
+									<td style="text-align:left; padding-left:${vo.depth*20}px"> 
+										<c:if test='${vo.depth!=0 }'>
+											<img src="${pageContext.request.contextPath }/assets/images/reply.png">
+										</c:if>
+										<a href="${pageContext.request.contextPath}/board?a=view&id=${vo.id}">${vo.title}</a></td>
+									<td>${vo.userName}</td>
+									<td>${vo.hit}</td>
+									<td>${vo.regDate }</td>
+									<td>									
+										<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
+											<a href="${pageContext.request.contextPath}/board?a=delete&id=${vo.id}" class="del">삭제</a>
+										</c:if>
+									</td>
+								</tr>
+							</c:if>
 						</c:forEach>
 					</table>
 				
 				<div class="pager">
+					<ul>
+						<li><a href="">◀</a></li>
+						<c:forEach var="i" begin="${firstPage }" end="${lastPage }" step="1">
+							<c:choose>
+								<c:when test="${i == curPage }">
+									<li class="selected">${i }</li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage}&curPage=${i}&lastPage=${lastPage}">${i }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<li><a href="">▶</a></li>
+					</ul>
+				<!-- 테스트
+					<ul>
+						<li><a href="">◀</a></li>
+						<c:forEach var="i" begin="1" end="5" step="1">
+							<c:choose>
+								<c:when test="${i == 3 }">
+									<li class="selected">${i }</li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/board&curPage=${i}">${i }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<li><a href="">▶</a></li>
+					</ul> -->
+				<!-- 원본
 					<ul>
 						<li><a href="">◀</a></li>
 						<li><a href="">1</a></li>
@@ -63,6 +95,7 @@
 						<li>5</li>
 						<li><a href="">▶</a></li>
 					</ul>
+				  -->
 				</div>				
 				
 				<div class="bottom">
