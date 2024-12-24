@@ -209,6 +209,21 @@ public class BoardDao {
 			} 			
 	}
 
+	public void increaseHit(BoardVo vo) {
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("update board set hit = hit+1 where id=?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setLong(1, vo.getId()); 
+				
+				// 5. SQL 실행
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 	
+	}
 	
 	
 	
@@ -230,6 +245,7 @@ public class BoardDao {
 		
 		return conn;
 	}
+
 
 
 

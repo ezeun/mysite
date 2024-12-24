@@ -16,6 +16,9 @@ public class ViewAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Long boardId = Long.parseLong(request.getParameter("id"));
 		BoardVo vo = new BoardDao().findById(boardId);
+
+		new BoardDao().increaseHit(vo);
+		
 		request.setAttribute("vo", vo);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/view.jsp");
