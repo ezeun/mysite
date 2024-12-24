@@ -83,7 +83,7 @@
 						</c:forEach>
 						
 						<c:choose>
-							<c:when test="${curPage == Math.round((listCount -1)/rowSizePerPage)+1  }">
+							<c:when test="${curPage == Math.floor((listCount -1)/rowSizePerPage)+1  }">
 								<li>▶</li>
 							</c:when>
 							<c:otherwise>
