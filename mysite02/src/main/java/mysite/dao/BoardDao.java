@@ -191,7 +191,24 @@ public class BoardDao {
 		
 	}
 	
-	
+	public void update(BoardVo vo) {
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("update board set title = ?, contents=? where id=?");
+			){
+				// 4. Parameter Binding  
+				pstmt.setString(1, vo.getTitle()); 
+				pstmt.setString(2, vo.getContents()); 
+				pstmt.setLong(3, vo.getId()); 
+				
+				// 5. SQL 실행
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			} 			
+	}
+
 	
 	
 	
@@ -213,6 +230,7 @@ public class BoardDao {
 		
 		return conn;
 	}
+
 
 
 
