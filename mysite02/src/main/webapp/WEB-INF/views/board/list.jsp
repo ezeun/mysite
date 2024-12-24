@@ -58,13 +58,22 @@
 				
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
+						<c:choose>
+							<c:when test="${firstPage == 1}">
+								<li>◀</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage-1}&curPage=${curPage-1}&lastPage=${lastPage-1}">◀</a></li>
+							</c:otherwise>
+						</c:choose>
+					
+						
 						<c:forEach var="i" begin="${firstPage }" end="${lastPage }" step="1">
 							<c:choose>
 								<c:when test="${i == curPage }">
 									<li class="selected">${i }</li>
 								</c:when>
-								<c:when test="${i>= ((listCount -1)/rowSizePerPage+1)}">
+								<c:when test="${i> ((listCount -1)/rowSizePerPage+1)}">
 									<li>${i }</li>
 								</c:when>
 								<c:otherwise>
@@ -72,7 +81,15 @@
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<li><a href="">▶</a></li>
+						
+						<c:choose>
+							<c:when test="${curPage == Math.round((listCount -1)/rowSizePerPage)+1  }">
+								<li>▶</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage+1}&curPage=${curPage+1}&lastPage=${lastPage+1}">▶</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				<!-- 원본
 					<ul>
