@@ -24,7 +24,7 @@ public class UpdateAction implements Action {
 		new BoardDao().update(vo);
 		
 		request.setAttribute("vo", vo);
-		response.sendRedirect(request.getContextPath()+"/board?a=updateform&id="+vo.getId());
+		response.sendRedirect(request.getContextPath()+"/board?a=view&id="+vo.getId());
 	}
 
 }
