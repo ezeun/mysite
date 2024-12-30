@@ -40,7 +40,7 @@
 						<a href="${pageContext.request.contextPath}/board?a=updateform&id=${vo.id}">글수정</a>
 					</c:if>
 					<c:if test='${(not empty authUser)}'>
-						<a href="${pageContext.request.contextPath}/board?a=writeform&gNo=${vo.gNo}&oNo=${vo.oNo}&depth=${vo.depth}">답글쓰기</a>
+						<a href="${pageContext.request.contextPath}/board/write/${vo.gNo}/${vo.oNo}/${vo.depth}">답글쓰기</a>
 					</c:if>
 				</div>
 			</div>

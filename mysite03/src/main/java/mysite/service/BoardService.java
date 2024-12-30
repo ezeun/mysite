@@ -1,0 +1,54 @@
+package mysite.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import mysite.repository.BoardRepository;
+import mysite.vo.BoardVo;
+
+@Service
+public class BoardService {
+	private BoardRepository boardRepository;
+	
+	public BoardService(BoardRepository boardRepository) {
+		this.boardRepository = boardRepository;
+	}
+
+	public void addContents(BoardVo vo) {
+	}
+	
+	public BoardVo getContents(Long id) {
+		return boardRepository.findById(id);
+	}
+
+	public BoardVo getContents(Long id, Long userId) {
+		return null;
+	}
+	
+	public void updateContents(BoardVo vo) {
+		
+	}
+	
+	public void deleteContents(Long id, Long userId) {
+		BoardVo vo = boardRepository.findById(id);
+		if(vo.getUserId() == userId) {
+			boardRepository.deleteById(id);
+		}
+	}
+	
+	public Map<String, Object> getContentsList(int firstPage, int curPage, int lastPage, String keyword){ //원래는 curPage랑 keyword만 있음
+		// view의 pagination을 위한 데이터 값 계산
+		Map<String, Integer> pageInfo = null;
+		if(curPage == 1) {
+			pageInfo = Map.of("firstPage", 1, "curPage", 1, "lastPage", 5);
+		}
+		else {
+			pageInfo = Map.of("firstPage", firstPage, "curPage", curPage, "lastPage", lastPage);
+		}
+
+		List<BoardVo> list = boardRepository.findAll();
+		return Map.of("pageInfo", pageInfo, "list", list);
+	}
+}

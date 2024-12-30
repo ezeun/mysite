@@ -14,12 +14,11 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board">
-					<input type = "hidden" name = "a" value="write">
-					<c:if test="${not empty param.gNo and not empty param.oNo and not empty param.depth}">
-						<input type='hidden' name="gNo" value="${param.gNo }">
-						<input type='hidden' name="oNo" value="${param.oNo }">
-						<input type='hidden' name="depth" value="${param.depth }">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
+					<c:if test="${not empty gNo and not empty oNo and not empty depth}">
+						<input type='hidden' name="gNo" value="${gNo }">
+						<input type='hidden' name="oNo" value="${oNo }">
+						<input type='hidden' name="depth" value="${depth }">
 					</c:if>
 					<table class="tbl-ex">
 						<tr>

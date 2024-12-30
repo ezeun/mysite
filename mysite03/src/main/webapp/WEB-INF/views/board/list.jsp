@@ -24,6 +24,10 @@
 				<!--  게시글 리스트 -->
 				<c:set var="listCount" value="${fn:length(list)}"/>
 				<c:set var="rowSizePerPage" value="5"/>
+				<c:set var="firstPage" value="${pageInfo.get('firstPage')}"/>
+				<c:set var="curPage" value="${pageInfo.get('curPage')}"/>
+				<c:set var="lastPage" value="${pageInfo.get('lastPage')}"/>
+				
 					<table class="tbl-ex">
 						<tr>
 							<th>번호</th>
@@ -42,13 +46,13 @@
 										<c:if test='${vo.depth!=0 }'>
 											<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 										</c:if>
-										<a href="${pageContext.request.contextPath}/board?a=view&id=${vo.id}">${vo.title}</a></td>
+										<a href="${pageContext.request.contextPath}/board/view/${vo.id}">${vo.title}</a></td>
 									<td>${vo.userName}</td>
 									<td>${vo.hit}</td>
 									<td>${vo.regDate }</td>
 									<td>									
 										<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
-											<a href="${pageContext.request.contextPath}/board?a=delete&id=${vo.id}" class="del">삭제</a>
+											<a href="${pageContext.request.contextPath}/board/delete/${vo.id}" class="del">삭제</a>
 										</c:if>
 									</td>
 								</tr>
@@ -63,7 +67,7 @@
 								<li>◀</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage-1}&curPage=${curPage-1}&lastPage=${lastPage-1}">◀</a></li>
+								<li><a href="${pageContext.request.contextPath}/board/${firstPage-1}/${curPage-1}/${lastPage-1}">◀</a></li>
 							</c:otherwise>
 						</c:choose>
 					
@@ -77,7 +81,7 @@
 									<li>${i }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage}&curPage=${i}&lastPage=${lastPage}">${i }</a></li>
+									<li><a href="${pageContext.request.contextPath}/board/${firstPage}/${i}/${lastPage}">${i }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -87,7 +91,7 @@
 								<li>▶</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/board?firstPage=${firstPage+1}&curPage=${curPage+1}&lastPage=${lastPage+1}">▶</a></li>
+								<li><a href="${pageContext.request.contextPath}/board/${firstPage+1}/${curPage+1}/${lastPage+1}">▶</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>
@@ -106,7 +110,7 @@
 				
 				<div class="bottom">
 					<c:if test='${not empty authUser }'>
-						<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath}/board/write" id="new-book">글쓰기</a>
 					</c:if>
 				</div>				
 			</div>
