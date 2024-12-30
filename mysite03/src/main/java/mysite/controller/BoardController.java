@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import mysite.service.BoardService;
+import mysite.vo.BoardVo;
 import mysite.vo.UserVo;
 
 @Controller
@@ -61,7 +62,7 @@ public class BoardController {
 		return "board/write";
 	}
 	
-	@RequestMapping(value="write/{gNo}/{oNo}/{depth}", method=RequestMethod.GET)
+	@RequestMapping(value="/write/{gNo}/{oNo}/{depth}", method=RequestMethod.GET)
 	public String write(@PathVariable("gNo") int gNo, @PathVariable("oNo") int oNo, @PathVariable("depth") int depth, Model model) {
 		model.addAttribute("gNo", gNo);
 		model.addAttribute("oNo", oNo);
@@ -69,10 +70,26 @@ public class BoardController {
 		return "board/write";
 	}
 	
-	@RequestMapping(value="write", method=RequestMethod.POST)
-	public String write(int gNo, int oNo, int depth) {
-		//여기부터
-		boardService.addContents(null);
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	public String write(BoardVo vo, HttpSession session) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		vo.setHit(0);
+		vo.setUserId(authUser.getId());
+		boardService.addContents(vo, authUser);
 		return "redirect:/board";
 	}
+	
+	@RequestMapping(value="/update/{id}", method=RequestMethod.GET)
+	public String update(@PathVariable("id") Long id, Model model) {		
+		model.addAttribute("vo", boardService.getContents(id));		
+		return "board/modify";
+	}	
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String update(BoardVo vo, Model model) {		
+		boardService.updateContents(vo);
+		model.addAttribute("vo", vo);
+		return "board/view";
+	}	
+	
 }

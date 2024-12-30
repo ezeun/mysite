@@ -37,7 +37,7 @@
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board">글목록</a>
 					<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
-						<a href="${pageContext.request.contextPath}/board?a=updateform&id=${vo.id}">글수정</a>
+						<a href="${pageContext.request.contextPath}/board/update/${vo.id}">글수정</a>
 					</c:if>
 					<c:if test='${(not empty authUser)}'>
 						<a href="${pageContext.request.contextPath}/board/write/${vo.gNo}/${vo.oNo}/${vo.depth}">답글쓰기</a>

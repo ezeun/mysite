@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import mysite.repository.BoardRepository;
 import mysite.vo.BoardVo;
+import mysite.vo.UserVo;
 
 @Service
 public class BoardService {
@@ -16,7 +17,8 @@ public class BoardService {
 		this.boardRepository = boardRepository;
 	}
 
-	public void addContents(BoardVo vo) {
+	public void addContents(BoardVo vo, UserVo authUser) {
+		boardRepository.insert(vo, authUser);
 	}
 	
 	public BoardVo getContents(Long id) {
@@ -28,7 +30,7 @@ public class BoardService {
 	}
 	
 	public void updateContents(BoardVo vo) {
-		
+		boardRepository.update(vo);
 	}
 	
 	public void deleteContents(Long id, Long userId) {
