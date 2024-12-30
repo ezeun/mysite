@@ -35,7 +35,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 		
 		String role = auth.role(); //세션에 있는거랑 비교
-		System.out.println(role);
 		
 		//5. @Auth가 붙어있기때문에 인증(Authentication) 여부 확인 
 		HttpSession session = request.getSession();
@@ -43,6 +42,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 		
 		if(authUser == null) {
 			response.sendRedirect(request.getContextPath() + "/user/login");
+			return false;
+		}
+		
+		if(role.equals("ADMIN") && authUser.getRole().equals("USER")) {
+			response.sendRedirect(request.getContextPath()+"/");
 			return false;
 		}
 		
