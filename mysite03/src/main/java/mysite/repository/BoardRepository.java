@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.ibatis.session.SqlSession;
@@ -30,77 +31,16 @@ public class BoardRepository {
 	public BoardVo findById(Long boardId) {
 		return sqlSession.selectOne("board.findById", boardId);
 	}
-	
-	public int getMaxgNo() {
-		
-		Optional<Integer> max_gNo;
-		int ret = 0;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select max(g_no) from board");
-			){							
-				// 5. SQL 실행
-				ResultSet rs = pstmt.executeQuery();
-				
-				if(rs.next()) {
-					max_gNo = Optional.of(rs.getInt(1));
-					if(max_gNo.isEmpty()) ret = 0; // null 방지 
-					else ret = max_gNo.get();
-				}
-				rs.close();
-				
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			} 
-		
-		return ret;
-	}
-	private void updateOrderNo(int gNo, int oNo) {
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("update board set o_no = o_no+1 where g_no=? and o_no>=?");
-			){
-				// 4. Parameter Binding  
-				pstmt.setInt(1, gNo); 
-				pstmt.setInt(2, oNo); 
-				
-				// 5. SQL 실행
-				pstmt.executeUpdate();
-				
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			} 
-	}
-	public void insert(BoardVo vo, UserVo authUser) {
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?);");
-		){			
-			// 4. Parameter Binding  
-			pstmt.setString(1, vo.getTitle()); 
-			pstmt.setString(2, vo.getContents()); 
-			pstmt.setInt(3, vo.getHit()); 
-			if(vo.getgNo()!=-1) { //답글
-				pstmt.setInt(4, vo.getgNo());
-				pstmt.setInt(5, vo.getoNo()+1);
-				pstmt.setInt(6, vo.getDepth()+1);
-				updateOrderNo( vo.getgNo(), vo.getoNo()+1);
-			}
-			else { //새글
-				pstmt.setInt(4, getMaxgNo()+1);
-				pstmt.setInt(5, 1);
-				pstmt.setInt(6, 0);
-			}			
-			pstmt.setLong(7, authUser.getId());
-			
-			// 5. SQL 실행
-			pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
+
+	public int insert(BoardVo vo, UserVo authUser) {
+		if(vo.getgNo()!=-1){ //답글
+			sqlSession.update("board.updateOrderNo", Map.of("gNo", vo.getgNo(), "oNo", vo.getoNo()+1));
+			return sqlSession.insert("board.insertReply", Map.of("vo", vo, "authUser", authUser));
+		}
+		else { //새글
+			int MaxgNo = sqlSession.selectOne("board.getMaxgNo");
+			return sqlSession.insert("board.insertNew", Map.of("vo", vo, "authUser", authUser, "MaxgNo", MaxgNo));
+		}
 	}
 
 	public int deleteById(Long id) {

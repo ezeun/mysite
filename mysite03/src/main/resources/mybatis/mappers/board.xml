@@ -20,7 +20,6 @@
 		]]>
 	</select>
 	
-	
 	<select id="findById" parameterType="long" resultType="boardvo" >
 		<![CDATA[
 			select id,
@@ -36,6 +35,36 @@
 			where id = #{id}
 		]]>
 	</select>
+	
+	<select id="getMaxgNo" resultType="int">
+		<![CDATA[	
+			select max(g_no) from board
+		]]>		
+	</select>
+	
+	<update id="updateOrderNo" parameterType="map">
+		<![CDATA[	
+			update board 
+				set o_no = o_no+1 
+				where g_no=#{gNo} 
+					and o_no>=#{oNo}
+		]]>	
+	</update>
+	
+	<insert id="insertReply" parameterType="map">
+		<![CDATA[	
+			insert 
+				into board 
+				values(null, #{vo.title}, #{vo.contents}, #{vo.hit}, now(), #{vo.gNo}, #{vo.oNo}+1, #{vo.depth}+1, #{authUser.id})
+		]]>	
+	</insert>
+	<insert id="insertNew" parameterType="map">
+		<![CDATA[	
+			insert 
+				into board 
+				values(null, #{vo.title}, #{vo.contents}, #{vo.hit}, now(), #{MaxgNo}+1, 1, 0, #{authUser.id})
+		]]>	
+	</insert>
 	
 	<delete id="deleteById" parameterType="long">
 		<![CDATA[		
