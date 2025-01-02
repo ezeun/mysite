@@ -22,7 +22,10 @@ public class BoardService {
 	}
 	
 	public BoardVo getContents(Long id) {
-		return boardRepository.findById(id);
+		BoardVo vo = boardRepository.findById(id);
+		System.out.println(vo + "SDfsdfsdf");
+		boardRepository.increaseHit(vo);
+		return vo;
 	}
 
 	public BoardVo getContents(Long id, Long userId) {
