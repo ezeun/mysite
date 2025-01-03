@@ -18,6 +18,6 @@ public class SiteService {
 	}
 	
 	public void updateSite(SiteVo siteVo) {
-		
+		siteRepository.update(siteVo);
 	}
 }

@@ -9,6 +9,9 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet" type="text/css">
+<%
+	pageContext.setAttribute("newline","\n");
+%>
 </head>
 <body>
 	<div id="container">
@@ -16,10 +19,10 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" src="${pageContext.request.contextPath}/assets/upload-images/profile.png">
+					<img id="profile" src="${pageContext.request.contextPath}${vo.profile}">
 					<h2>${vo.welcome }</h2>
 					<p>
-						${vo.description }
+						${fn:replace(vo.description, newline, "<br>")}<br>
 						<br>
 						<a href="${pageContext.request.contextPath}/guestbook">방명록</a>에 글 남기기<br>
 					</p>

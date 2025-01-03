@@ -8,7 +8,6 @@ import mysite.service.SiteService;
 
 @Controller
 public class MainController {
-	
 	private SiteService siteService;
 	
 	public MainController(SiteService siteService) {
