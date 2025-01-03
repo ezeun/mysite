@@ -25,6 +25,8 @@
 	<!-- mvc url-resource mapping -->
 	<mvc:resources mapping="/assets/upload-images/**" location="file:/mysite-uploads"/>
 	
+	<!-- MultipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 	
 	<!-- Interceptors -->
 	<mvc:interceptors>
@@ -42,6 +44,10 @@
 			<mvc:exclude-mapping path="/user/logout"/>
 			<mvc:exclude-mapping path="/assets/**"/>
 			<bean class="mysite.security.AuthInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="mysite.security.SiteInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 	

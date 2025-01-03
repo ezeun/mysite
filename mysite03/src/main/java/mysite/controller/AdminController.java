@@ -31,15 +31,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@RequestParam("title") String title,
-						 @RequestParam("welcome") String welcome,
-						 @RequestParam("file") MultipartFile file,
-						 @RequestParam("description") String description) {
-		SiteVo vo = new SiteVo();
-		vo.setTitle(title);
-		vo.setWelcome(welcome);
+	public String update(SiteVo vo,
+						 @RequestParam("file") MultipartFile file) {
 		vo.setProfile(fileUploadService.restore(file));
-		vo.setDescription(description);
 		siteService.updateSite(vo);
 		return "redirect:/";
 	}
