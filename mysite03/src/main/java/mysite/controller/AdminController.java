@@ -47,9 +47,6 @@ public class AdminController {
 		if(profile != null) {
 			siteVo.setProfile(profile);
 		}
-		else {
-			siteVo.setProfile(((SiteVo)servletContext.getAttribute("siteVo")).getProfile());
-		}
 		siteService.updateSite(siteVo);
 		
 		// update servlet context bean
