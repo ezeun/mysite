@@ -10,7 +10,7 @@
 		]]>
 	</insert>
 	
-	<update id="update" parameterType="string">
+	<update id="update">
 		<![CDATA[
 			update guestbook_log 
 				set count = count + 1 
