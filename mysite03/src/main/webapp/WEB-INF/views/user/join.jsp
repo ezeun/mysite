@@ -34,6 +34,9 @@ $(function(){
 				
 				$("#img-check").show();
 				$("#btn-check").hide();
+			},
+			error: function(xhr, status, err){
+				console.error(err);
 			}
 		});
 		
@@ -62,12 +65,12 @@ $(function(){
 
 					<label class="block-label" for="email"><spring:message code="user.join.label.email"/></label>
 					<form:input path="email" />
-					<p style="padding: 5px 0; margin: 0; color:#f00">
-						<form:errors path="email" />
-					</p>
 					<spring:message code="user.join.label.email.check" var="emailCheckButtonText"/>
 					<input id="btn-check" type="button" value="${emailCheckButtonText }" style="display:''">
 					<img id="img-check" src="${pageContext.request.contextPath}/assets/images/check.png" style="vertical-align:bottom; width:24px; display:none">
+					<p style="padding: 5px 0; margin: 0; color:#f00">
+						<form:errors path="email" />
+					</p>
 					
 					<label class="block-label"><spring:message code="user.join.label.password"/></label>
 					<form:password path="password" />
