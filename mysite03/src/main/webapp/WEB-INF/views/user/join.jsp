@@ -25,7 +25,12 @@ $(function(){
 			type: "get",
 			dataType: "json",
 			success: function(response){
-				if(response.exist){
+				if(response.result != "success"){
+					console.log(response.message);
+					return;
+				}
+				
+				if(response.data.exist){
 					alert("이메일이 존재합니다. 다른 이메일을 사용해 주세요.");
 					$("#email").val("");
 					$("#email").focus();
