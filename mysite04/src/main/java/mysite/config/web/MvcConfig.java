@@ -52,6 +52,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		return messageConverter;
 	}
 	
+	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
 				.indentOutput(true)
@@ -85,6 +86,7 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 	
 	//Interceptors
+	@Bean
 	public HandlerInterceptor siteInterceptor() {
 		return new SiteInterceptor();
 	}

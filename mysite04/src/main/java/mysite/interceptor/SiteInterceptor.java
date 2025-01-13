@@ -12,6 +12,7 @@ import mysite.vo.SiteVo;
 public class SiteInterceptor implements HandlerInterceptor {
 	@Autowired
 	private LocaleResolver localeResolver;
+	
 	@Autowired
 	private SiteService siteService;
 	

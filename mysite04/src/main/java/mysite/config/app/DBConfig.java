@@ -12,7 +12,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionManager;
 
 @Configuration
-@PropertySource("classpath:mysite/config/app/jdbc.peroperties")
+@PropertySource("classpath:mysite/config/app/jdbc.properties")
 public class DBConfig {
 
 	@Autowired
@@ -28,6 +28,7 @@ public class DBConfig {
 		return dataSource;
 	}
 	
+	@Bean
 	public TransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
