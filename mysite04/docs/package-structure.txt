@@ -17,7 +17,7 @@ Package 구조
 |	 |--- service
 |	 |--- repository
 
-[src/main/resources]
+[src/main/resources] 
 |--- mysite
 |	 |--- config
 |	 |	  |--- app
