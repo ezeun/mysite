@@ -8,11 +8,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import mysite.config.app.DBConfig;
 import mysite.config.app.MybatisConfig;
+import mysite.config.app.SecurityConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@Import({DBConfig.class, MybatisConfig.class})
+@Import({DBConfig.class, MybatisConfig.class, SecurityConfig.class})
 @ComponentScan(basePackages= {"mysite.service", "mysite.repository", "mysite.aspect"})
 public class AppConfig {
 
