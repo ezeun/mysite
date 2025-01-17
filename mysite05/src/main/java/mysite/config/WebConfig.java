@@ -12,7 +12,7 @@ import mysite.config.web.MvcConfig;
 @Configuration
 @EnableAspectJAutoProxy
 @Import({MvcConfig.class, LocaleConfig.class, FileUploadConfig.class})
-@ComponentScan({"mysite.controller", "mysite.service", "mysite.exception"})
+@ComponentScan({"mysite.controller", "mysite.exception"})
 public class WebConfig {
 
 }

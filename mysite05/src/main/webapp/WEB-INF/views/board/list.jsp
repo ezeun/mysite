@@ -1,6 +1,7 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -50,10 +51,12 @@
 									<td>${vo.userName}</td>
 									<td>${vo.hit}</td>
 									<td>${vo.regDate }</td>
-									<td>									
-										<c:if test='${(not empty authUser) and (authUser.id eq vo.userId)}'>
-											<a href="${pageContext.request.contextPath}/board/delete/${vo.id}" class="del">삭제</a>
-										</c:if>
+									<td>	
+										<sec:authorize access="isAuthenticated()">								
+											<c:if test='${(authUser.id eq vo.userId)}'>
+												<a href="${pageContext.request.contextPath}/board/delete/${vo.id}" class="del">삭제</a>
+											</c:if>
+										</sec:authorize>
 									</td>
 								</tr>
 							</c:if>
@@ -109,9 +112,9 @@
 				</div>				
 				
 				<div class="bottom">
-					<c:if test='${not empty authUser }'>
+					<sec:authorize access="isAuthenticated()">
 						<a href="${pageContext.request.contextPath}/board/write" id="new-book">글쓰기</a>
-					</c:if>
+					</sec:authorize>
 				</div>				
 			</div>
 		</div>
