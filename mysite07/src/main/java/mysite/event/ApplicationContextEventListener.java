@@ -9,16 +9,18 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.MutablePropertySources;
 
+import lombok.extern.slf4j.Slf4j;
 import mysite.service.SiteService;
 import mysite.vo.SiteVo;
 
+@Slf4j
 public class ApplicationContextEventListener {
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@EventListener({ContextRefreshedEvent.class})
 	public void handlerContextRefreshedEvent() {
-		System.out.println("-- ContextRefreshedEvent Received --");
+		log.info("-- ContextRefreshedEvent Received --");
 		
 		SiteService siteService = applicationContext.getBean(SiteService.class);
 		SiteVo vo = siteService.getSite();

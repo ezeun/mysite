@@ -14,12 +14,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import mysite.dto.JsonResult;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	private static final Log log = LogFactory.getLog(GlobalExceptionHandler.class);
-	
+
 	@ExceptionHandler(Exception.class)
 	public void handler(
 			HttpServletRequest request,
