@@ -85,7 +85,7 @@ public class SecurityConfig {
         	});
         	/*
         	.exceptionHandling(exceptionHandling -> {
-//        		exceptionHandling.accessDeniedPage("/WEB-INF/views/error/403.jsp");
+//        		exceptionHandling.accessDeniedPage("/error/403");
         		exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
 					
 					@Override
