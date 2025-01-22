@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<select id="findAll" resultType="boardvo">
+		<![CDATA[
+			select b.id, 
+				   b.title, 
+				   b.contents, 
+				   b.hit, 
+				   date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+				   b.g_no as gNo, 
+				   b.o_no as oNo, 
+				   b.depth, 
+				   b.user_id as userId, 
+				   u.name as userName
+			from board b, user u
+			where b.user_id = u.id
+			order by b.g_no desc, b.o_no asc
+		]]>
+	</select>
+	
+	<select id="findById" parameterType="long" resultType="boardvo" >
+		<![CDATA[
+			select id,
+				   title, 
+			       contents, 
+			       hit, 
+			       date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+			       g_no as gNo, 
+			       o_no as oNo, 
+			       depth, 
+			       user_id as userId
+			from board 
+			where id = #{id}
+		]]>
+	</select>
+	
+	<select id="getMaxgNo" resultType="int">
+		<![CDATA[	
+			select max(g_no) from board
+		]]>		
+	</select>
+	
+	<update id="updateOrderNo" parameterType="map">
+		<![CDATA[	
+			update board 
+				set o_no = o_no+1 
+				where g_no=#{gNo} 
+					and o_no>=#{oNo}
+		]]>	
+	</update>
+	
+	<insert id="insertReply" parameterType="map">
+		<![CDATA[	
+			insert 
+				into board 
+				values(null, #{vo.title}, #{vo.contents}, #{vo.hit}, now(), #{vo.gNo}, #{vo.oNo}+1, #{vo.depth}+1, #{authUser.id})
+		]]>	
+	</insert>
+	<insert id="insertNew" parameterType="map">
+		<![CDATA[	
+			insert 
+				into board 
+				values(null, #{vo.title}, #{vo.contents}, #{vo.hit}, now(), #{MaxgNo}+1, 1, 0, #{authUser.id})
+		]]>	
+	</insert>
+	
+	<delete id="deleteById" parameterType="long">
+		<![CDATA[		
+			delete 
+				from board 
+				where id = #{id}
+		]]>	
+	</delete>
+	
+	<update id="update" parameterType="boardvo">
+		<![CDATA[		
+			update board 
+				set title = #{title}, 
+					contents=#{contents} 
+				where id=#{id}
+		]]>	
+	</update>
+	
+	<update id="increaseHit" parameterType="boardvo">
+		<![CDATA[		
+			update board 
+				set hit = hit+1 
+				where id=#{id}
+		]]>	
+	</update>
+	
+</mapper>
